@@ -1,78 +1,108 @@
-import { makeLossArray, positiveDifference, applyLoss } from "./setUpAttacks";
+import setUpAttacks from "./setUpAttacks.js";
 
-test("testing makeLossArray with simple data with shield", () => {
-  const characters = [
-    { name: "маг", health: 100 },
-    { name: "лучник", health: 80 },
-    { name: "мечник", health: 10 }
-  ];
-  const loss = 9;
-  const makeResult = () => makeLossArray(loss, 1, characters, true);
-  expect(makeResult()).toEqual([3, 3, 3]);
-});
 
-test("testing makeLossArray with simple data without shield", () => {
-  const characters = [
-    { name: "маг", health: 100 },
-    { name: "лучник", health: 80 },
-    { name: "мечник", health: 10 }
-  ];
-  const loss = 9;
-  const makeResult = () => makeLossArray(loss, 1, characters, false);
-  expect(makeResult()).toEqual([0, 9, 0]);
-});
+describe('TESTING main function setUpAttacks', () => {
 
-test("testing makeLossArray with complex data (one dead and lossRemainder != 0) with shield", () => {
-  const characters = [
-    { name: "маг", health: 0 },
-    { name: "лучник", health: 80 },
-    { name: "мечник", health: 10 }
-  ];
-  const loss = 41;
-  const makeResult = () => makeLossArray(loss, 1, characters, true);
-  expect(makeResult()).toEqual([0, 21, 20]);
-});
+  test('testing with trivial data', () => {
+    let characters = [{
+        name: "маг",
+        health: 100
+      },
+      {
+        name: "лучник",
+        health: 80
+      },
+      {
+        name: "мечник",
+        health: 10
+      }
+    ];
+    const attacks = setUpAttacks(characters);
 
-test("testing positiveDifference with trivial data", () => {
-  expect(positiveDifference(100, 58)).toBe(42);
-});
+    let result = attacks[1](9);
+    const expected = [{
+        name: 'маг',
+        health: 97
+      },
+      {
+        name: 'лучник',
+        health: 77
+      },
+      {
+        name: 'мечник',
+        health: 7
+      },
+    ];
 
-test("testing positiveDifference with non-trivial data 1", () => {
-  expect(positiveDifference(2, 10)).toBe(0);
-});
+    expect(result).toEqual(expected);
+  });
 
-test("testing positiveDifference with non-trivial data 2", () => {
-  expect(positiveDifference(3, 3)).toBe(0);
-});
+  test('testing with non-trivial data', () => {
+    let characters = [{
+        name: "маг",
+        health: 0
+      },
+      {
+        name: "лучник",
+        health: 10
+      },
+      {
+        name: "мечник",
+        health: 15
+      }
+    ];
+    const attacks = setUpAttacks(characters);
 
-test("testing applyLoss with trivial data", () => {
-  const items = [
-    { name: "маг", health: 100 },
-    { name: "лучник", health: 80 },
-    { name: "мечник", health: 10 }
-  ];
-  const lossArray = [3,3,3]
-  const makeResult = () => applyLoss(items, lossArray);
-  const expected = [
-    {name: 'маг', health: 97},
-    {name: 'лучник', health: 77},
-    {name: 'мечник', health: 7},
-  ];
-  expect(makeResult()).toEqual(expected);
-});
+    let result = attacks[2](25);
+    const expected = [{
+        name: 'маг',
+        health: 0
+      },
+      {
+        name: 'лучник',
+        health: 0
+      },
+      {
+        name: 'мечник',
+        health: 2
+      },
+    ];
 
-test("testing applyLoss with non-trivial data", () => {
-  const items = [
-    { name: "маг", health: 100 },
-    { name: "лучник", health: 0 },
-    { name: "мечник", health: 10 }
-  ];
-  const lossArray = [10,13,23]
-  const makeResult = () => applyLoss(items, lossArray);
-  const expected = [
-    {name: 'маг', health: 90},
-    {name: 'лучник', health: 0},
-    {name: 'мечник', health: 0},
-  ];
-  expect(makeResult()).toEqual(expected);
+    expect(result).toEqual(expected);
+  });
+
+  test('testing without shield', () => {
+    let characters = [{
+        name: "маг",
+        health: 20
+      },
+      {
+        name: "лучник",
+        health: 30
+      },
+      {
+        name: "мечник",
+        health: 45
+      }
+    ];
+    const attacks = setUpAttacks(characters, false);
+
+    let result = attacks[1](31);
+    const expected = [{
+        name: "маг",
+        health: 20
+      },
+      {
+        name: "лучник",
+        health: 0
+      },
+      {
+        name: "мечник",
+        health: 45
+      }
+    ];
+
+    expect(result).toEqual(expected);
+  });
+
 });
