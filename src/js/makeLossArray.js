@@ -1,4 +1,4 @@
-// this module contains makeLossArray and its dependency makeAliveIndexes
+// this module contains makeLossArray and its dependency makeAliveIndices
 
 
 function makeAliveIndices(items) {
