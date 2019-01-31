@@ -1,23 +1,8 @@
 function setUpAttacks(items, shield = true) {
-  const aliveIndices = makeAliveIndices(items);
-  const aliveNumber = aliveIndices.length;
-
   return items.map((item, iAttacked, items) => {
     return loss => {
-      const lossShare = Math.floor(loss / aliveNumber);
-      const lossRemainder = loss % aliveNumber;
-      return items.reduce((acc, currentItem, idx) => {
-        const resultantItem = { ...currentItem };
-        if (aliveIndices.includes(idx)) {
-          const newHealth =
-            currentItem.health -
-            lossShare -
-            (idx === iAttacked ? lossRemainder : 0);
-          const resultantHealth = newHealth > 0 ? newHealth : 0;
-          resultantItem.health = resultantHealth;
-        }
-        return [...acc, resultantItem];
-      }, []);
+      const lossArray = makeLossArray(loss, iAttacked, items, shield);
+      return applyLoss(items, lossArray);
     };
   });
 }
@@ -27,7 +12,6 @@ function makeLossArray(loss, iAttacked, items, shield) {
   const aliveNumber = aliveIndices.length;
   const lossShare = Math.floor(loss / aliveNumber);
   const lossRemainder = loss % aliveNumber;
-
   return items.map((item, i) => {
     if (!shield) {
       return i === iAttacked ? loss : 0;
