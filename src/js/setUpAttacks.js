@@ -1,5 +1,5 @@
 function setUpAttacks(items, shield = true) {
-  return items.map((item, iAttacked, items) => {
+  return items.map((_, iAttacked, items) => {
     return loss => {
       const lossArray = makeLossArray(loss, iAttacked, items, shield);
       return applyLoss(items, lossArray);
@@ -12,7 +12,7 @@ function makeLossArray(loss, iAttacked, items, shield) {
   const aliveNumber = aliveIndices.length;
   const lossShare = Math.floor(loss / aliveNumber);
   const lossRemainder = loss % aliveNumber;
-  return items.map((item, i) => {
+  return items.map((_, i) => {
     if (!shield) {
       return i === iAttacked ? loss : 0;
     }
