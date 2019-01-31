@@ -1,5 +1,5 @@
-// this module contains the main program setUpAttack,
-// that produces an array of function through a closure,
+// this module contains the main function setUpAttack,
+// that produces an array of functions through a closure,
 // so that they have access to item and shield variables
 
 import { applyLoss } from './applyLoss';
