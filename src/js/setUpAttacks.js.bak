@@ -1,12 +1,13 @@
 function setUpAttacks(items, shield = true) {
+  const result = [];
   const aliveIndices = alive(items);
   const aliveNumber = aliveIndices.length;
 
-  return items.map((item, i, items) => {
-    return (loss) => {
+  for (let i = 0; i < items.length; i++) {
+    const attack = (loss) => {
       const lossShare = Math.floor(loss / aliveNumber);
       const lossRemainder = loss % aliveNumber;
-      return items.reduce((acc, currentItem, idx) => {
+      const modifiedItems = items.reduce((acc, currentItem, idx) => {
         const resultantItem = {...currentItem};
         if (aliveIndices.includes(idx)) {
           const newHealth = currentItem.health - lossShare - (idx === i ? lossRemainder : 0);
@@ -15,8 +16,17 @@ function setUpAttacks(items, shield = true) {
         }
         return [...acc, resultantItem];
       }, []);
-    };
-  });
+      return modifiedItems;
+    }
+
+
+    result[i] = attack;
+
+    
+  }
+
+
+  return result;
 }
 
 function alive(items) {
