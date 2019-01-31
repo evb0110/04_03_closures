@@ -1,11 +1,18 @@
 // this module contains makeLossArray and its dependency makeAliveIndexes
 
+
+function makeAliveIndices(items) {
+  // Returns the indices of all the characters that are alive
+  return items.reduce((acc, item, i) => {
+    if (item.health > 0) return [...acc, i];
+    return acc;
+  }, []);
+}
+
 function makeLossArray(loss, iAttacked, items, shield) {
   if (!shield) {
     // without shield attacking only one character
-    return items.map((_, i) => {
-      return i === iAttacked ? loss : 0;
-    });
+    return items.map((_, i) => (i === iAttacked ? loss : 0));
   }
 
   const aliveIndices = makeAliveIndices(items);
@@ -16,19 +23,13 @@ function makeLossArray(loss, iAttacked, items, shield) {
     if (aliveIndices.includes(i)) {
       // attacking only characters that are alive
       return lossShare + (i === iAttacked ? lossRemainder : 0);
-      // the initially attacked character takes not only the common lossShare, but the remainder (if any) as well
+      // the initially attacked character takes not only the common lossShare,
+      // but the remainder (if any) as well
     }
     return 0;
     // all the dead characters remain intact
   });
 }
 
-function makeAliveIndices(items) {
-  // Returns the indices of all the characters that are alive
-  return items.reduce((acc, item, i) => {
-    if (item.health > 0) return [...acc, i];
-    return acc;
-  }, []);
-}
 
-export {makeLossArray, makeAliveIndices };
+export { makeLossArray, makeAliveIndices };
