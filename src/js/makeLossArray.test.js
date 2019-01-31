@@ -61,3 +61,32 @@ describe('TESTING makeLossArray', () => {
     expect(makeResult()).toEqual([0, 21, 20]);
   });
 });
+
+describe('TESTING makeAliveIndices', () => {
+  const characters = [{
+    name: 'маг',
+    health: 0,
+  },
+  {
+    name: 'йог',
+    health: 80,
+  },
+  {
+    name: 'дух',
+    health: 0,
+  },
+  {
+    name: 'пух',
+    health: 10,
+  },
+  {
+    name: 'пих',
+    health: 1000,
+  },
+  {
+    name: 'чел',
+    health: 0,
+  },
+  ];
+  expect(makeAliveIndices(characters)).toEqual([1, 3, 4]);
+});

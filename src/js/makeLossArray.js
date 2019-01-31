@@ -31,5 +31,4 @@ function makeLossArray(loss, iAttacked, items, shield) {
   });
 }
 
-
 export { makeLossArray, makeAliveIndices };
